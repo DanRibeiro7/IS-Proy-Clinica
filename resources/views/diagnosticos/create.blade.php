@@ -5,8 +5,8 @@
     <h1>Registrar Diagnóstico</h1>
     <form method="POST" action="{{ route('diagnosticos.store') }}">
         @csrf
-        <label>Código:</label>
-        <input type="text" name="DiaCodigo" required><br>
+        <label>Nombre:</label>
+        <input type="text" name="DiaNombre" required><br>
 
         <label>Descripción:</label>
         <input type="text" name="DiaDescripcion" required><br>

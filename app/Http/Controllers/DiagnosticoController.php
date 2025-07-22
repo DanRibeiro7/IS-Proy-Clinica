@@ -24,8 +24,8 @@ class DiagnosticoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'DiagNombre' => 'required|string|max:100',
-            'DiagDescripcion' => 'nullable|string',
+            'DiaNombre' => 'required|string|max:100',
+            'DiaDescripcion' => 'nullable|string',
         ]);
 
         Diagnostico::create($request->all());
@@ -51,8 +51,8 @@ class DiagnosticoController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'DiagNombre' => 'required|string|max:100',
-            'DiagDescripcion' => 'nullable|string',
+            'DiaNombre' => 'required|string|max:100',
+            'DiaDescripcion' => 'nullable|string',
         ]);
 
         $diagnostico = Diagnostico::findOrFail($id);

@@ -24,20 +24,25 @@ class VisitaController extends Controller
 
     // Guardar la nueva visita
     public function store(Request $request)
-    {
-        $request->validate([
-            'PacID' => 'required|exists:pacientes,PacID',
-            'Viscodigo' => 'required|string|max:100',
-            'VisEstado' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'PacID' => 'required|exists:pacientes,PacID',
+        // otros campos de la visita
+    ]);
 
-        Visita::create([
-            'PacID' => $request->PacID,
-            'Viscodigo' => $request->Viscodigo,
-            'VisEstado' => $request->VisEstado,
-            'VisFecha_generado' => now(),
-        ]);
+    // Verificar cuántas visitas tiene el paciente
+    $visitasCount = \App\Models\Visita::where('PacID', $request->PacID)->count();
 
-        return redirect()->route('visitas.index')->with('success', 'Visita registrada correctamente.');
+    if ($visitasCount >= 4) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['PacID' => 'Este paciente ya tiene el número máximo de 4 visitas.']);
     }
+
+    // Crear la visita si no ha alcanzado el límite
+    \App\Models\Visita::create($request->all());
+
+    return redirect()->route('visitas.index')->with('success', 'Visita registrada correctamente.');
+}
+
 }

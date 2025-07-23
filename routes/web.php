@@ -7,18 +7,23 @@ use App\Http\Controllers\VisitaController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\DiagnosticoController;
 
-
+// Redireccionar al dashboard como inicio
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
-// Rutas RESTful para pacientes (index, create, store, show, edit, update, destroy)
+// Vista principal del dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+// Rutas RESTful para recursos principales
 Route::resource('pacientes', PacienteController::class);
 Route::resource('visitas', VisitaController::class);
 Route::resource('medicos', MedicoController::class);
 Route::resource('diagnosticos', DiagnosticoController::class);
 
+// Rutas específicas para asignaciones
+Route::get('/asignaciones', [AsignacionController::class, 'index'])->name('asignaciones.index');
 Route::get('/asignaciones/create', [AsignacionController::class, 'create'])->name('asignaciones.create');
 Route::post('/asignaciones', [AsignacionController::class, 'store'])->name('asignaciones.store');
-Route::get('/asignaciones', [AsignacionController::class, 'index'])->name('asignaciones.index');
-

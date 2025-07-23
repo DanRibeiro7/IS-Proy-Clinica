@@ -26,24 +26,27 @@ class PacienteController extends Controller
 
     // Guardar nuevo paciente
     public function store(Request $request)
-    {
-        $request->validate([
-            'PacNombre' => 'required|string|max:100',
-            'PacDni' => 'required|string|max:15|unique:pacientes,PacDni',
-            'PacFechaIngreso' => 'required|date',
-            'CamID' => 'nullable|exists:camas,CamID',
-            'NivID' => 'required|exists:niveles,NivID',
-        ]);
+{
+    $request->validate([
+        'PacNombre' => 'required|string|max:100',
+        'PacDni' => 'required|string|max:15|unique:pacientes,PacDni',
+        'PacFechaIngreso' => 'required|date',
+        'PacFechaNacimiento' => 'nullable|date',
+        'PacCorreo' => 'nullable|email|max:100',
+        'PacCelular' => 'nullable|string|max:20',
+        'CamID' => 'nullable|exists:camas,CamID',
+        'NivID' => 'required|exists:niveles,NivID',
+    ]);
 
-        Paciente::create($request->all());
+    Paciente::create($request->all());
 
-        // Opcional: marcar cama como ocupada
-        if ($request->CamID) {
-            Cama::where('CamID', $request->CamID)->update(['CamEstado' => 'ocupada']);
-        }
-
-        return redirect()->route('pacientes.index')->with('success', 'Paciente registrado correctamente.');
+    if ($request->CamID) {
+        Cama::where('CamID', $request->CamID)->update(['CamEstado' => 'ocupada']);
     }
+
+    return redirect()->route('pacientes.index')->with('success', 'Paciente registrado correctamente.');
+}
+
 
     // Ver detalles de un paciente
     public function show($id)
@@ -62,22 +65,26 @@ class PacienteController extends Controller
     }
 
     // Actualizar paciente
-    public function update(Request $request, $id)
-    {
-        $paciente = Paciente::findOrFail($id);
+   public function update(Request $request, $id)
+{
+    $paciente = Paciente::findOrFail($id);
 
-        $request->validate([
-            'PacNombre' => 'required|string|max:100',
-            'PacDni' => 'required|string|max:15|unique:pacientes,PacDni,' . $paciente->PacID . ',PacID',
-            'PacFechaIngreso' => 'required|date',
-            'CamID' => 'nullable|exists:camas,CamID',
-            'NivID' => 'required|exists:niveles,NivID',
-        ]);
+    $request->validate([
+        'PacNombre' => 'required|string|max:100',
+        'PacDni' => 'required|string|max:15|unique:pacientes,PacDni,' . $paciente->PacID . ',PacID',
+        'PacFechaIngreso' => 'required|date',
+        'PacFechaNacimiento' => 'nullable|date',
+        'PacCorreo' => 'nullable|email|max:100',
+        'PacCelular' => 'nullable|string|max:20',
+        'CamID' => 'nullable|exists:camas,CamID',
+        'NivID' => 'required|exists:niveles,NivID',
+    ]);
 
-        $paciente->update($request->all());
+    $paciente->update($request->all());
 
-        return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado correctamente.');
-    }
+    return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado correctamente.');
+}
+
 
     // Eliminar paciente
     public function destroy($id)

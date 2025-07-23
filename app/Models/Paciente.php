@@ -11,13 +11,16 @@ class Paciente extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'PacNombre',
-        'PacDni',
-        'PacFechaIngreso',
-        'PacFechaAlta',
-        'CamID',
-        'NivID',
-    ];
+    'PacNombre',
+    'PacDni',
+    'PacFechaIngreso',
+    'PacFechaAlta',
+    'CamID',
+    'NivID',
+    'PacFechaNacimiento',   // Nueva columna: fecha de nacimiento
+    'PacCorreo',            // Nueva columna: correo electrónico
+    'PacCelular'            // Nueva columna: número de celular
+];
 
     // Relación con Cama
     public function cama()

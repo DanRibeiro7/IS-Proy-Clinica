@@ -2,31 +2,58 @@
 
 @section('content')
 <div class="container">
-    <h2>Editar Paciente</h2>
+    <h2>Editar Arrendatario</h2>
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form action="{{ route('pacientes.update', $paciente->PacID) }}" method="POST">
-        @csrf @method('PUT')
+        @csrf
+        @method('PUT')
 
         <div class="mb-3">
-            <label>Nombre</label>
-            <input type="text" name="PacNombre" class="form-control" value="{{ $paciente->PacNombre }}" required>
+            <label for="PacNombre" class="form-label">Nombre</label>
+            <input type="text" name="PacNombre" class="form-control" value="{{ old('PacNombre', $paciente->PacNombre) }}" required>
         </div>
 
         <div class="mb-3">
-            <label>DNI</label>
-            <input type="text" name="PacDni" class="form-control" value="{{ $paciente->PacDni }}" required>
+            <label for="PacDni" class="form-label">DNI</label>
+            <input type="text" name="PacDni" class="form-control" value="{{ old('PacDni', $paciente->PacDni) }}" required>
         </div>
 
         <div class="mb-3">
-            <label>Fecha de Ingreso</label>
-            <input type="date" name="PacFechaIngreso" class="form-control" value="{{ $paciente->PacFechaIngreso }}" required>
+            <label for="PacFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" name="PacFechaNacimiento" class="form-control" value="{{ old('PacFechaNacimiento', $paciente->PacFechaNacimiento) }}">
         </div>
 
         <div class="mb-3">
-            <label>Nivel</label>
-            <select name="NivID" class="form-control">
+            <label for="PacCorreo" class="form-label">Correo Electrónico</label>
+            <input type="email" name="PacCorreo" class="form-control" value="{{ old('PacCorreo', $paciente->PacCorreo) }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="PacCelular" class="form-label">Celular</label>
+            <input type="text" name="PacCelular" class="form-control" value="{{ old('PacCelular', $paciente->PacCelular) }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="PacFechaIngreso" class="form-label">Fecha de Ingreso</label>
+            <input type="date" name="PacFechaIngreso" class="form-control" value="{{ old('PacFechaIngreso', $paciente->PacFechaIngreso) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="NivID" class="form-label">Nivel</label>
+            <select name="NivID" class="form-control" required>
+                <option value="">-- Seleccione --</option>
                 @foreach($niveles as $nivel)
-                    <option value="{{ $nivel->NivID }}" {{ $paciente->NivID == $nivel->NivID ? 'selected' : '' }}>
+                    <option value="{{ $nivel->NivID }}" {{ old('NivID', $paciente->NivID) == $nivel->NivID ? 'selected' : '' }}>
                         {{ $nivel->NivNombre }}
                     </option>
                 @endforeach
@@ -34,18 +61,18 @@
         </div>
 
         <div class="mb-3">
-            <label>Cama</label>
+            <label for="CamID" class="form-label">Cama</label>
             <select name="CamID" class="form-control">
+                <option value="">-- Sin asignar --</option>
                 @foreach($camas as $cama)
-                    <option value="{{ $cama->CamID }}" {{ $paciente->CamID == $cama->CamID ? 'selected' : '' }}>
+                    <option value="{{ $cama->CamID }}" {{ old('CamID', $paciente->CamID) == $cama->CamID ? 'selected' : '' }}>
                         {{ $cama->CamCodigo }}
                     </option>
                 @endforeach
             </select>
         </div>
 
-        <button class="btn btn-primary">Actualizar</button>
-        <a href="{{ route('pacientes.index') }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Actualizar</button>
     </form>
 </div>
 @endsection

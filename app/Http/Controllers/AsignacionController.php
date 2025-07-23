@@ -45,7 +45,8 @@ class AsignacionController extends Controller
     $paciente->medicos()->sync($request->medicos);
     $paciente->diagnosticos()->sync($request->diagnosticos);
 
-    return redirect()->route('asignaciones.create')->with('success', 'Asignación realizada correctamente.');
+    return redirect()->route('asignaciones.index')->with('success', 'Asignación realizada correctamente.');
+
 }
 
 
